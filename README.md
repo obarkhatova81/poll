@@ -63,16 +63,22 @@ To run the application locally, follow these steps:
 
 **Clone the Repository**
    ```sh
-   git clone https://github.com/yourusername/livepoll.git
-   cd livepoll
+   git clone https://github.com/obarkhatova81/poll.git
+   cd poll
    go mod tidy
+```
+**Run Redis**
+   ```sh
    docker run --name redis -p 6379:6379 -d redis
-    go run cmd/main.go
-
-   ```
+  ```
+    
+**Run the Application**
+```sh
+   go run cmd/main.go
+  ```
 
 **Access the Application**
 
-
 HTTP server: http://localhost:8080
 WebSocket server: ws://localhost:8080/ws
+
