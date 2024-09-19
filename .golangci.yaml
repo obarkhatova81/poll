@@ -1,0 +1,19 @@
+linters:
+  enable:
+    - govet
+    - errcheck
+    - gofmt
+    - golint
+    - ineffassign
+    - staticcheck
+    - unused
+    - structcheck
+
+run:
+  tests: true
+
+issues:
+  max-same-issues: 10
+  max-issues-per-linter: 0
+  max-issues-per-file: 50
+  exclude-use-default: false

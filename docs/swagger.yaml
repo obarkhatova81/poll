@@ -1,0 +1,252 @@
+definitions:
+  models.Poll:
+    properties:
+      id:
+        type: string
+      options:
+        items:
+          type: string
+        type: array
+      question:
+        type: string
+      votes:
+        additionalProperties:
+          type: integer
+        type: object
+    type: object
+  server.CreatePollRequest:
+    properties:
+      options:
+        items:
+          type: string
+        type: array
+      question:
+        type: string
+    type: object
+  server.UpdatePollRequest:
+    properties:
+      options:
+        items:
+          type: string
+        type: array
+      question:
+        type: string
+    type: object
+  server.VoteRequest:
+    properties:
+      option:
+        type: string
+      user_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /polls:
+    get:
+      description: Retrieve a list of all polls
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Poll'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List all polls
+      tags:
+      - Polls
+    post:
+      description: Create a new poll with a unique ID
+      parameters:
+      - description: Poll data
+        in: body
+        name: poll
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreatePollRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new poll
+      tags:
+      - Polls
+  /polls/{id}:
+    delete:
+      description: Delete a poll by its unique ID
+      parameters:
+      - description: Poll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a poll by ID
+      tags:
+      - Polls
+    get:
+      description: Retrieve a poll by its unique ID
+      parameters:
+      - description: Poll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Poll'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a poll by ID
+      tags:
+      - Polls
+    put:
+      description: Update a poll's details by its unique ID
+      parameters:
+      - description: Poll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Poll data
+        in: body
+        name: poll
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdatePollRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a poll by ID
+      tags:
+      - Polls
+  /polls/{id}/vote:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to vote for a poll option
+      parameters:
+      - description: Poll ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Vote details
+        in: body
+        name: vote
+        required: true
+        schema:
+          $ref: '#/definitions/server.VoteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Poll not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Vote for a poll
+      tags:
+      - Poll
+swagger: "2.0"
